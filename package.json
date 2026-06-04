@@ -1,0 +1,9 @@
+{
+  "name": "semhorapix",
+  "version": "1.0.0",
+  "description": "Projeto SemHoraPix — independente do SemHoraVendas. Webhook de recebimento PIX (Vercel Serverless).",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  }
+}
