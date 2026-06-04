@@ -172,7 +172,7 @@ module.exports = async (req, res) => {
     await registrarPix({ valor: payment.value, nome, dataPix });
 
     // 6 + 7 — envia no WhatsApp com 1 retry após 20s
-    const texto = `PIX CONFIRMADO✅✅ ${nome}  valor: ${valorFmt}  Às ${dataPix}`;
+    const texto = `PIX CONFIRMADO✅✅\n${nome}\n\nvalor: ${valorFmt}\n\nÀs ${dataPix}`;
     try {
       await enviarWhatsApp(texto);
     } catch (e1) {
