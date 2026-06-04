@@ -15,21 +15,26 @@
  *   6. Envia mensagem no grupo de WhatsApp via uazapi.
  *   7. Se o envio falhar, espera 20s e tenta novamente uma vez.
  *
- * Variáveis de ambiente (configurar na Vercel):
- *   SUPABASE_URL                (default: projeto semhorapix)
- *   SUPABASE_SERVICE_ROLE_KEY   (obrigatória — service role, ignora RLS)
- *   ASAAS_ACCESS_TOKEN          (obrigatória — token da API Asaas)
- *   UAZAPI_URL                  (default: https://semhoravendas.uazapi.com)
- *   UAZAPI_TOKEN                (obrigatória)
- *   UAZAPI_GRUPO                (default: 120363407246179266)
- *   PIX_EMPRESA_ID              (default: 2)
+ * Configuração:
+ *   Por enquanto é UM cliente de teste (empresa_id=2), então os valores ficam
+ *   fixos no código abaixo (sobrescrevíveis por env var, se quiser).
+ *
+ *   FUTURO MULTI-CLIENTE: o token do Asaas e o WhatsApp são POR CLIENTE.
+ *   A tabela `empresa` (semhorapix) já tem as colunas `token_asaas` e
+ *   `whatsapp_propietario` — basta buscar por empresa_id / pela conta Asaas
+ *   que chega no webhook e usar os valores de lá, em vez das constantes.
  */
 
+// --- Conexão do app (Supabase semhorapix) ---
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://xhzeruahwekxszyxtxwy.supabase.co';
-const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const ASAAS_TOKEN = process.env.ASAAS_ACCESS_TOKEN;
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY
+  || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhoemVydWFod2VreHN6eXh0eHd5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTczOTQ4NjI0NywiZXhwIjoyMDU1MDYyMjQ3fQ.LCtPOFewLYJ6rkjs6I07iHfOIvMcYJvXJUcO-iFSuH0';
+
+// --- Por cliente (HOJE fixo; FUTURO: tabela `empresa`) ---
+const ASAAS_TOKEN = process.env.ASAAS_ACCESS_TOKEN
+  || '$aact_MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6OjRiM2NkYTA2LWIzZWUtNGUwNi1iODVmLTZmNzA4NjVkYzFmYTo6JGFhY2hfM2Q1N2ZiNzMtMmZiMS00NzUxLWE0NTItOTRjZmFkODRkMWM4';
 const UAZAPI_URL = process.env.UAZAPI_URL || 'https://semhoravendas.uazapi.com';
-const UAZAPI_TOKEN = process.env.UAZAPI_TOKEN;
+const UAZAPI_TOKEN = process.env.UAZAPI_TOKEN || '4fa15c0f-86bf-4323-9b1b-96be1f9f4eed';
 const UAZAPI_GRUPO = process.env.UAZAPI_GRUPO || '120363407246179266';
 const EMPRESA_ID = Number(process.env.PIX_EMPRESA_ID || 2);
 
