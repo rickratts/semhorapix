@@ -41,7 +41,7 @@ const EMPRESA_ID = Number(process.env.PIX_EMPRESA_ID || 2);
 // Token de autenticação do webhook (configurado no painel da Asaas).
 // A Asaas envia esse valor no header `asaas-access-token` em todo request.
 const ASAAS_WEBHOOK_TOKEN = process.env.ASAAS_WEBHOOK_TOKEN
-  || 'whsec_8UJJfe3eFfxPfSL51pTGRZc53zAlQOZ0eAduakeZm2w';
+  || 'whsec_QNkgg6zfZn5ba2NRo6o7gRztn1WkUo-5jc1J6-VDiS4';
 
 const CLIENTE_IGNORADO = 'Appmax Plataforma Vendas Ltda';
 
