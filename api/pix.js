@@ -38,6 +38,11 @@ const UAZAPI_TOKEN = process.env.UAZAPI_TOKEN || '4fa15c0f-86bf-4323-9b1b-96be1f
 const UAZAPI_GRUPO = process.env.UAZAPI_GRUPO || '120363407246179266';
 const EMPRESA_ID = Number(process.env.PIX_EMPRESA_ID || 2);
 
+// Token de autenticação do webhook (configurado no painel da Asaas).
+// A Asaas envia esse valor no header `asaas-access-token` em todo request.
+const ASAAS_WEBHOOK_TOKEN = process.env.ASAAS_WEBHOOK_TOKEN
+  || 'whsec_8UJJfe3eFfxPfSL51pTGRZc53zAlQOZ0eAduakeZm2w';
+
 const CLIENTE_IGNORADO = 'Appmax Plataforma Vendas Ltda';
 
 // Formata a data como no N8N: "DD/MM/AAAA às HH:MM:SS" (com +3h)
@@ -132,6 +137,13 @@ module.exports = async (req, res) => {
   }
   if (req.method !== 'POST') {
     return res.status(405).json({ ok: false, erro: 'Método não permitido' });
+  }
+
+  // Valida o token enviado pela Asaas (header `asaas-access-token`).
+  // Protege o endpoint contra requests forjados por terceiros.
+  if (ASAAS_WEBHOOK_TOKEN && req.headers['asaas-access-token'] !== ASAAS_WEBHOOK_TOKEN) {
+    console.warn('[pix] request com token inválido — rejeitado');
+    return res.status(401).json({ ok: false, erro: 'Não autorizado' });
   }
 
   try {
