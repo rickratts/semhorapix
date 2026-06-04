@@ -142,7 +142,9 @@ module.exports = async (req, res) => {
   // Valida o token enviado pela Asaas (header `asaas-access-token`).
   // Protege o endpoint contra requests forjados por terceiros.
   if (ASAAS_WEBHOOK_TOKEN && req.headers['asaas-access-token'] !== ASAAS_WEBHOOK_TOKEN) {
-    console.warn('[pix] request com token inválido — rejeitado');
+    const recebido = req.headers['asaas-access-token'];
+    const mascara = (t) => (t ? `${String(t).slice(0, 14)}…(len ${String(t).length})` : '(ausente)');
+    console.warn('[pix] token inválido — recebido:', mascara(recebido), '| esperado:', mascara(ASAAS_WEBHOOK_TOKEN));
     return res.status(401).json({ ok: false, erro: 'Não autorizado' });
   }
 
